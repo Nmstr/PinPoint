@@ -1,0 +1,48 @@
+name: Build
+
+on:
+  pull_request:
+    types:
+      - opened
+      - synchronize
+      - reopened
+  merge_group:
+  workflow_dispatch:
+
+env:
+  CARGO_TERM_COLOR: always
+
+jobs:
+  build-linux:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install system dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y libfontconfig1-dev pkg-config
+
+      - name: Build
+        run: cargo build --locked --verbose
+
+  build-android:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install system dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y llvm libfontconfig1-dev pkg-config
+
+      - name: Install Rust Android target
+        run: rustup target add aarch64-linux-android
+
+      - name: Install xbuild
+        run: cargo install --git https://github.com/rust-mobile/xbuild.git
+
+      - name: Build
+        run: x build --platform android --arch arm64

@@ -1,6 +1,8 @@
+#![allow(non_snake_case)]
+
 mod app;
 
-use app::App;
+pub use app::App;
 
 #[cfg(target_os = "android")]
 #[unsafe(no_mangle)]
