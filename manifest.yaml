@@ -1,0 +1,5 @@
+android:
+  manifest:
+    package: de.nmstr.pinpoint
+    application:
+      label: "PinPoint!"
